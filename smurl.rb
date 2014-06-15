@@ -1,6 +1,11 @@
 require 'sinatra'
 require 'haml'
 
+require './helpers'
+
+require 'radix'
+BASE = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
+
 class Smurl < Sinatra::Base
 
   get '/' do
@@ -15,13 +20,10 @@ class Smurl < Sinatra::Base
   end
 
   helpers do
+    include Helpers
+
     def get_or_set_short_url url
       "smurl"
-    end
-
-    def shrinkage(original, short)
-      percent = 100.0 * short.length / original.length
-      "#{percent}%"
     end
   end
 
