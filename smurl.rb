@@ -3,9 +3,6 @@ require 'haml'
 
 require './helpers'
 
-require 'radix'
-BASE = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
-
 class Smurl < Sinatra::Base
 
   get '/' do

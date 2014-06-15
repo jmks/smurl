@@ -1,14 +1,19 @@
+require 'radix'
+BASE = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
+
 module Helpers
     def shrinkage(original, short)
       percent = 100.0 * short.length / original.length
       "#{ percent.round(2) }%"
     end
 
-    def encode62 string
-
+    # encodes integers into base 62 strings
+    def encode62 integer
+        integer.b(BASE.length).to_a.map { |i| BASE[i] }.join
     end
 
-    def decode62 integer
-
+    # decodes base 62 strings into integers
+    def decode62 string
+        string.split('').map { |c| BASE.index(c) }.b(BASE.length).to_s(10).to_i
     end
 end
