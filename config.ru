@@ -1,0 +1,3 @@
+require './smurl'
+
+Smurl.run!
