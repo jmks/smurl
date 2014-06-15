@@ -1,3 +1,3 @@
 require './smurl'
 
-Smurl.run!
+run Smurl
