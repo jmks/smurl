@@ -1,0 +1,23 @@
+- if @smurls
+  %h4 What others are shortening
+  %table
+    %thead
+      %tr
+        %td Id
+        %td Original Url
+        %td Date Created
+        %td Used
+    - @smurls.each do |smurl|
+      %tr
+        %td #{ smurl.id }
+        %td
+          %a{ href: smurl.id, target: '_blank' } #{ smurl.url }
+        %td #{ smurl.created_at }
+        %td #{ smurl.accessed }
+- else
+  %div
+    No urls shortened yet... Be the
+    %a { href: '/' } first!
+
+%br
+%a{ href: '/' } Home

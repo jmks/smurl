@@ -1,15 +1,22 @@
-- if @shortened_url
+- if @small_url
   %div
     %h1 You entered: #{ @url }
     %h1 
       %span We smurled:
-      %small #{ @shortened_url }
+      %small #{ @small_url.url }
     /%a(href="")
-    %small Modulo our domain name, the url shrank #{ shrinkage(@url, @shortened_url) }
-%br
+    %small Modulo our domain name, the url shrank #{ shrinkage(@url, @small_url.path) }
+  %br
+- elsif @encoded
+  %div
+    %h3 Sorry, but there is no url associated with #{ @encoded }
 
 %form{ action: '/', method: :post }
   %label
   Enter your url
   %input{ type: 'text', name: 'url', placeholder: 'Enter your url' }
   %button{ type: 'submit', name: 'submit', value: 'smurlify' } Smurlify
+%br
+
+%div
+  %a{ href: '/urls' } See what others are shortening!
