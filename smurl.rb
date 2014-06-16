@@ -20,13 +20,17 @@ class SmallUrl
   end
 
   def full_url
-    'https://' + self.url
+    'http://' + self.url
   end
 end
 
 DataMapper.finalize
 
 class Smurl < Sinatra::Base
+
+  before do 
+    @host = request.host_with_port
+  end
 
   get '/urls' do
     @smurls = SmallUrl.all
@@ -68,7 +72,11 @@ class Smurl < Sinatra::Base
     end
 
     def clean_url url
-      url.gsub /^http:\/\//, ''
+      url.gsub /^https?:\/\//, ''
+    end
+
+    def small_url(smurl, host=@host)
+      host + '/' + encode62(smurl.id)
     end
   end
 

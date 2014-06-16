@@ -52,6 +52,8 @@ describe 'Helpers' do
       3.times {
         length = Random.new.rand(1..10)
         word   = (0..length).map { |i| BASE.sample }.join
+        # trim leading zeros
+        word.gsub(/^0+/, '')
 
         expect(encode62(decode62(word))).to eql word
       }

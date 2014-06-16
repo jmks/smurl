@@ -5,13 +5,17 @@
       %tr
         %td Id
         %td Original Url
+        %td Smurled
         %td Date Created
         %td Used
     - @smurls.each do |smurl|
       %tr
         %td #{ smurl.id }
         %td
-          %a{ href: smurl.id, target: '_blank' } #{ smurl.url }
+          %a{ href: smurl.full_url, target: '_blank' } #{ smurl.url }
+        - smaller_url = small_url(smurl)
+        %td 
+          %a{ href: 'http://' + smaller_url, target: '_blank' } #{ smaller_url }
         %td #{ smurl.created_at }
         %td #{ smurl.accessed }
 - else

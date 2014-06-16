@@ -3,9 +3,10 @@
     %h1 You entered: #{ @url }
     %h1 
       %span We smurled:
-      %small #{ @small_url.url }
-    /%a(href="")
-    %small Modulo our domain name, the url shrank #{ shrinkage(@url, @small_url.path) }
+      - smaller_url = small_url(@small_url)
+      %small #{ smaller_url }
+    %small The url shrank #{ shrinkage(@url, smaller_url) }
+    %small Note: with your support, a smaller domain would be much better!
   %br
 - elsif @encoded
   %div
