@@ -1,4 +1,4 @@
-- if @smurls
+- if @smurls.any?
   %h4 What others are shortening
   %table
     %thead
@@ -21,7 +21,7 @@
 - else
   %div
     No urls shortened yet... Be the
-    %a { href: '/' } first!
+    %a{ href: '/' } first!
 
 %br
 %a{ href: '/' } Home

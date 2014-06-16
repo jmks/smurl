@@ -4,7 +4,7 @@ BASE = ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
 module Helpers
   def shrinkage(original, short)
     if [original, short].map {|obj| obj.respond_to? :length }.all?
-      percent = 100.0 * short.length / original.length
+      percent = 100.0 * (original.length - short.length) / original.length
       "#{ percent.round(2) }%"
     else
       "unknown"
