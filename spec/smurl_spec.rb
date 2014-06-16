@@ -1,5 +1,6 @@
 require 'rspec'
 
+require_relative '../smurl'
 require_relative '../helpers'
 
 describe 'Helpers' do
@@ -57,6 +58,30 @@ describe 'Helpers' do
 
         expect(encode62(decode62(word))).to eql word
       }
+    end
+  end
+
+  describe '#clean_url' do 
+    it 'removes leading http://' do 
+      expect(clean_url('http://www.google.ca')).to eql 'www.google.ca'
+    end
+
+    it 'removes leading https://' do 
+      expect(clean_url('https://www.google.ca')).to eql 'www.google.ca'
+    end
+  end
+
+  describe '#small_url' do
+    before :each do 
+      @smurl = SmallUrl.new id: 1, url: 'https://www.google.ca', accessed: 0, created_at: Time.now
+    end
+
+    it 'returns an url without protocol given a host name' do 
+      expect(small_url(@smurl, "localhost")).to eql 'localhost/1'
+    end
+
+    it 'returns a relative path with no host' do 
+      expect(small_url(@smurl)).to eql '/1'
     end
   end
 end

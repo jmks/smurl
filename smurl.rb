@@ -70,14 +70,7 @@ class Smurl < Sinatra::Base
       now = Time.now
       SmallUrl.first_or_create({ url: url }, { accessed: 0, created_at: now })
     end
-
-    def clean_url url
-      url.gsub /^https?:\/\//, ''
-    end
-
-    def small_url(smurl, host=@host)
-      host + '/' + encode62(smurl.id)
-    end
+    
   end
 
 end
