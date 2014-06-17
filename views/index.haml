@@ -13,8 +13,8 @@
     %h3 Sorry, but there is no url associated with #{ @encoded }
 
 %form{ action: '/', method: :post }
-  %label
-  Enter your url
+  %label{ for: 'url' }
+    Enter your url
   %input{ type: 'text', name: 'url', placeholder: 'Enter your url' }
   %button{ type: 'submit', name: 'submit', value: 'smurlify' } Smurlify
 %br
