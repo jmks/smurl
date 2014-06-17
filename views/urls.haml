@@ -13,9 +13,8 @@
         %td #{ smurl.id }
         %td
           %a{ href: smurl.full_url, target: '_blank' } #{ smurl.url }
-        - smaller_url = small_url(smurl)
         %td 
-          %a{ href: 'http://' + smaller_url, target: '_blank' } #{ smaller_url }
+          %a{ href: 'http://' + smurl.small_url, target: '_blank' } #{ smurl.small_url }
         %td #{ smurl.created_at }
         %td #{ smurl.accessed }
 - else

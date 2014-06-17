@@ -1,6 +1,8 @@
-require 'data_mapper'
+require './small_url'
 
 database_path = "#{ Dir.pwd }/smurl.db"
+temp_db_path  = "#{ Dir.pwd }/smurl_temp.db"
+test_db_path  = "#{ Dir.pwd }/smurl_test.db"
 
 task :default => :test
 
@@ -13,7 +15,6 @@ namespace :db do
     elsif File.exists? database_path
       puts "Using existing #{ database_path }"
     else
-      require './smurl'
       SmallUrl.auto_migrate!
       puts "SmallUrl migrated"
     end
@@ -26,7 +27,24 @@ namespace :db do
   
 end
 
-desc 'runs all the the tests'
-task :test do 
+# hacky but it works
+desc 'runs specs with clean database'
+task :test do
+  if File.exists? database_path
+    mv database_path, temp_db_path
+  end
+
+  SmallUrl.auto_migrate!
+
   sh 'bundle exec rspec'
+
+  rm database_path
+
+  mv temp_db_path, database_path
+end
+
+desc 'run cucumber tests'
+task :cuke do 
+  # clean?
+  sh 'bundle exec cucumber'
 end
