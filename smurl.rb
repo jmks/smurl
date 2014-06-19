@@ -33,8 +33,12 @@ class Smurl < Sinatra::Base
   end
 
   post '/' do 
-    @url       = params[:url]
-    @small_url = SmallUrl.get_small_url(@url)
+    @url    = params[:url]
+    @vanity = params[:vanity]
+
+    # error checking
+
+    @small_url = SmallUrl.get_small_url(@url, @vanity)
 
     haml :index
   end

@@ -15,7 +15,7 @@ namespace :db do
     elsif File.exists? database_path
       puts "Using existing #{ database_path }"
     else
-      SmallUrl.auto_migrate!
+      migrate_database_tables
       puts "SmallUrl migrated"
     end
   end
@@ -34,7 +34,7 @@ task :test do
     mv database_path, temp_db_path
   end
 
-  SmallUrl.auto_migrate!
+  migrate_database_tables
 
   sh 'bundle exec rspec'
 
@@ -47,4 +47,9 @@ desc 'run cucumber tests'
 task :cuke do 
   # clean?
   sh 'bundle exec cucumber'
+end
+
+def migrate_database_tables
+  SmallUrl.auto_migrate!
+  CustomUrl.auto_migrate!
 end

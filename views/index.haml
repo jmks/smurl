@@ -1,9 +1,18 @@
+- if @errors
+  %h5 The following errors were reported:
+  %ul
+    - @errors.each do |err|
+      %li= err
+
 - if @small_url
   %div
-    %h1 You entered: #{ @url }
+    %h1
+      You entered:
+      %a{ href: @url, target: '_blank' } #{ @url }
     %h1 
       %span We smurled:
-      %small #{ @small_url.small_url }
+      %small
+        %a{ href: @small_url.small_url, target: '_blank'} #{ @small_url.small_url }
     %small The url shrank #{ shrinkage(@url, @small_url.small_url) }
     %small Note: with your support, a smaller domain would be much better!
   %br
@@ -14,8 +23,16 @@
 %form{ action: '/', method: :post }
   %label{ for: 'url' }
     Enter your url
-  %input{ type: 'text', name: 'url', placeholder: 'Enter your url' }
+    %input{ type: 'text', name: 'url', placeholder: 'Enter your url' }
+  %br
+
+  %label{ for: 'vanity' }
+    Custom short name (not required)
+    %input{ type: 'text', name: 'vanity', placeholder: 'Enter your url' }
+  %br
+
   %button{ type: 'submit', name: 'submit', value: 'smurlify' } Smurlify
+
 %br
 
 %div

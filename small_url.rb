@@ -30,18 +30,34 @@ class SmallUrl
   end
 
   # data access
-  def self.get_small_url url
-    url = SmallUrl.clean_url url
-    now = Time.now
-    SmallUrl.first_or_create({ url: url }, { accessed: 0, created_at: now })
+  def self.get_small_url original_url, vanity=nil
+    custom_url   = CustomUrl.first(link: vanity) if vanity
+    
+    original_url = SmallUrl.clean_url original_url
+    now          = Time.now
+
+    if custom_url
+      SmallUrl.first(id: custom_url.smurl_id)
+    elsif vanity and custom_url.nil?
+      small_url  = SmallUrl.first_or_create({ url: original_url }, { accessed: 0, created_at: now })
+      custom_url = CustomUrl.create(link: vanity, smurl_id: small_url.id)
+
+      small_url
+    else
+      SmallUrl.first_or_create({ url: original_url }, { accessed: 0, created_at: now })
+    end
   end
 
   def self.find_by_encoded_id encoded_id
-    if encoded_id
+    return nil unless encoded_id
+
+    custom_url = CustomUrl.first(link: encoded_id)
+
+    if custom_url
+      SmallUrl.first(id: custom_url.smurl_id)
+    else
       id = SmallUrl.decode62(@encoded)
       SmallUrl.first(id: id)
-    else
-      nil
     end
   end
 
@@ -61,6 +77,13 @@ class SmallUrl
   def self.clean_url url
     url.gsub /^https?:\/\//, ''
   end
+end
+
+class CustomUrl
+  include DataMapper::Resource
+
+  property :link,     String, key: true
+  property :smurl_id, Integer
 end
 
 DataMapper.finalize
