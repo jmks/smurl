@@ -16,7 +16,7 @@
           %a{ href: smurl.full_url, target: '_blank' } #{ smurl.url }
         %td 
           %a{ href: 'http://' + small_url, target: '_blank' } #{ small_url }
-        %td #{ smurl.created_at }
+        %td #{ format_date smurl.created_at }
         %td #{ smurl.accessed }
 - else
   %div

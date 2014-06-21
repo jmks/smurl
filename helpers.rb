@@ -8,5 +8,9 @@ module Helpers
       "unknown"
     end
   end
+
+  def format_date date
+    date.strftime("%b %-d, %Y @ %-l:%M%P")
+  end
   
 end

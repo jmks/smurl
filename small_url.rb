@@ -60,7 +60,7 @@ class SmallUrl
     if custom_url
       SmallUrl.first(id: custom_url.smurl_id)
     else
-      id = SmallUrl.decode62(@encoded)
+      id = SmallUrl.decode62(encoded_id)
       SmallUrl.first(id: id)
     end
   end

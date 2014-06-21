@@ -20,4 +20,13 @@ describe 'Helpers' do
       end
     end
   end
+
+  describe '#format_date' do 
+    it 'formats the date for human eyes' do 
+      date     = DateTime.new(2014, 6, 9, 18, 07)
+      expected = 'Jun 9, 2014 @ 6:07pm'
+
+      expect(format_date(date)).to eql expected
+    end
+  end
 end
