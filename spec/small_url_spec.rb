@@ -2,7 +2,6 @@ require 'rspec'
 require 'pry'
 
 require_relative '../smurl'
-require_relative '../helpers'
 
 # aliases for private methods
 def encode62 arg

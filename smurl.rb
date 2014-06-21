@@ -9,7 +9,7 @@ require './small_url'
 class Smurl < Sinatra::Base
 
   before do 
-    @host = request.host_with_port
+    @host ||= ENV['HOST'] || request.host_with_port
   end
 
   get '/urls' do
@@ -41,6 +41,10 @@ class Smurl < Sinatra::Base
     @small_url = SmallUrl.get_small_url(@url, @vanity)
 
     haml :index
+  end
+
+  def self.host
+    @host
   end
 
   helpers Helpers

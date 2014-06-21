@@ -20,8 +20,12 @@ class SmallUrl
   end
 
   # returns url for a SmallUrl object, depends on current host
-  def small_url(host=@host)
-    relative = '/' + SmallUrl.encode62(id)
+  def small_url(host=Smurl.host)
+    custom_url = CustomUrl.first(smurl_id: id)
+    link       = custom_url.link if custom_url
+    path       = link || SmallUrl.encode62(id)
+
+    relative = '/' + path
     if host
       host + relative
     else 

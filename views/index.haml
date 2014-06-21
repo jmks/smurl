@@ -10,10 +10,11 @@
       You entered:
       %a{ href: @url, target: '_blank' } #{ @url }
     %h1 
+      - small_url = @small_url.small_url(@host)
       %span We smurled:
       %small
-        %a{ href: @small_url.small_url, target: '_blank'} #{ @small_url.small_url }
-    %small The url shrank #{ shrinkage(@url, @small_url.small_url) }
+        %a{ href: small_url, target: '_blank'} #{ small_url }
+    %small The url shrank #{ shrinkage(@url, small_url) }
     %small Note: with your support, a smaller domain would be much better!
   %br
 - elsif @encoded
@@ -22,18 +23,16 @@
 
 %form{ action: '/', method: :post }
   %label{ for: 'url' }
-    Enter your url
+    Shorten url
     %input{ type: 'text', name: 'url', placeholder: 'Enter your url' }
+    %button{ type: 'submit', name: 'submit', value: 'smurlify' } Smurlify
   %br
-
   %label{ for: 'vanity' }
-    Custom short name (not required)
-    %input{ type: 'text', name: 'vanity', placeholder: 'Enter your url' }
+    to #{ Smurl.host }
+    %input{ type: 'text', name: 'vanity', placeholder: 'Enter custom url name' }
+    (optional)
   %br
-
-  %button{ type: 'submit', name: 'submit', value: 'smurlify' } Smurlify
 
 %br
-
 %div
   %a{ href: '/urls' } See what others are shortening!
