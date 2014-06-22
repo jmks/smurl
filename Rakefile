@@ -36,11 +36,13 @@ task :test do
 
   migrate_database_tables
 
-  sh 'bundle exec rspec'
+  begin
+    sh 'bundle exec rspec'
+  ensure
+    rm database_path
 
-  rm database_path
-
-  mv temp_db_path, database_path
+    mv temp_db_path, database_path
+  end
 end
 
 desc 'run cucumber tests'

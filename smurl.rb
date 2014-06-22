@@ -36,9 +36,9 @@ class Smurl < Sinatra::Base
     @url    = params[:url]
     @vanity = params[:vanity]
 
-    # error checking
+    @errors = validate_smurl_params params
 
-    @small_url = SmallUrl.get_small_url(@url, @vanity)
+    @small_url = SmallUrl.get_small_url(@url, @vanity) unless @errors.any?
 
     haml :index
   end

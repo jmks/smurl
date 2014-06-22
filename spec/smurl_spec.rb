@@ -29,4 +29,33 @@ describe 'Helpers' do
       expect(format_date(date)).to eql expected
     end
   end
+
+  describe '#validate_smurl_params' do 
+    it 'returns no errors for a valid url and vanity url' do 
+      errors = validate_smurl_params url: 'goo.gl', vanity: 'g'
+
+      expect(errors.length).to be 0
+    end
+
+    it 'returns errors for blank urls' do 
+      errors = validate_smurl_params url: ''
+      
+      expect(errors.length).to eql 1
+      expect(errors.first).to include 'empty'
+    end
+
+    it 'returns errors for blank urls' do 
+      errors = validate_smurl_params url: '    '
+      
+      expect(errors.length).to eql 1
+      expect(errors.first).to include 'empty'
+    end
+
+    it 'returns errors for illegal vanity urls' do 
+      errors = validate_smurl_params url: 'validish.url', vanity: 'hash!'
+
+      expect(errors.length).to eql 1
+      expect(errors.first).to include 'only contain'
+    end
+  end
 end
