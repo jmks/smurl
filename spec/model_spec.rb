@@ -48,7 +48,7 @@ describe 'SmallUrl' do
         end
       end
 
-      context 'when url is known' do
+      context 'when url already exists' do
         it 'does not create a new SmallUrl' do 
           expect {
             SmallUrl.get_small_url(@slashdot.url)
@@ -143,6 +143,28 @@ describe 'SmallUrl' do
 
     it 'removes leading https://' do 
       expect(clean_url('https://www.google.ca')).to eql 'www.google.ca'
+    end
+  end
+
+  describe 'after create hook' do 
+    context 'when creating a new small url' do 
+      context 'with no custom url' do 
+        it 'creates a custom url based on its id' do 
+          google     = SmallUrl.get_small_url @google.url
+          encoded_id = SmallUrl.send(:encode62, google.id)
+
+          expect(SmallUrl.find_by_encoded_id(encoded_id)).to eql google
+        end
+      end
+
+      context 'with a custom url' do 
+        it 'creates a custom url based on its id' do 
+          google     = SmallUrl.get_small_url @google.url, 'elgoog'
+          encoded_id = SmallUrl.send(:encode62, google.id)
+
+          expect(SmallUrl.find_by_encoded_id(encoded_id)).to eql google
+        end
+      end
     end
   end
 end

@@ -16,12 +16,12 @@ class SmallUrl
   property :created_at, DateTime
 
   def full_url
-    'http://' + self.url
+    'http://' + self.url + '/'
   end
 
   # returns url for a SmallUrl object, depends on current host
   def small_url(host=Smurl.host)
-    custom_url = CustomUrl.first(smurl_id: id)
+    custom_url = CustomUrl.last(smurl_id: id)
     link       = custom_url.link if custom_url
     path       = link || SmallUrl.encode62(id)
 
@@ -48,8 +48,6 @@ class SmallUrl
 
       small_url
     else
-      # TODO: if this is created, it needs a custom url!
-      # TODO: it needs to check the custom url by its id doesn't already exist
       SmallUrl.first_or_create({ url: original_url }, { accessed: 0, created_at: now })
     end
   end
@@ -68,6 +66,22 @@ class SmallUrl
   end
 
   private
+
+  # after create hook to add a link in CustomUrl for self's encoded id
+  self.after(:create) do |entry|
+    id           = entry.id
+    desired_link = SmallUrl.encode62 id
+    custom_url   = CustomUrl.first link: desired_link
+      
+    # resolve conflicts my incremented to next usable encoding
+    while custom_url
+      id           = id.next
+      desired_link = SmallUrl.encode62 id
+      custom_url   = CustomUrl.first link: desired_link
+    end
+
+    CustomUrl.create link: desired_link, smurl_id: entry.id
+  end
 
   # encodes integers into base 62 strings
   def self.encode62 integer

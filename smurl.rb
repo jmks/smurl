@@ -12,6 +12,9 @@ class Smurl < Sinatra::Base
     @host ||= ENV['HOST'] || request.host_with_port
   end
 
+  # TODO: add support for black listed urls
+  Blacklisted_urls = %w{ urls }
+
   get '/urls' do
     @smurls = SmallUrl.all
 
