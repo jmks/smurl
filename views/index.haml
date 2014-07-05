@@ -1,4 +1,4 @@
-- if @errors
+- if @errors and @errors.any?
   %h5 The following errors were reported:
   %ul
     - @errors.each do |err|
@@ -24,12 +24,12 @@
 %form{ action: '/', method: :post }
   %label{ for: 'url' }
     Shorten url
-    %input{ type: 'text', name: 'url', placeholder: 'Enter your url' }
+    %input{ type: 'text', name: 'url', placeholder: 'Enter your url', value: @url}
     %button{ type: 'submit', name: 'submit', value: 'smurlify' } Smurlify
   %br
   %label{ for: 'vanity' }
     to #{ Smurl.host }
-    %input{ type: 'text', name: 'vanity', placeholder: 'Enter custom url name' }
+    %input{ type: 'text', name: 'vanity', placeholder: 'Enter custom url name', value: @vanity }
     (optional)
   %br
 

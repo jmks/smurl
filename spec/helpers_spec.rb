@@ -37,7 +37,7 @@ describe 'Helpers' do
       expect(errors.length).to be 0
     end
 
-    it 'returns errors for blank urls' do 
+    it 'returns errors for empty urls' do 
       errors = validate_smurl_params url: ''
       
       expect(errors.length).to eql 1

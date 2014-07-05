@@ -23,34 +23,59 @@ describe 'SmallUrl' do
     CustomUrl.destroy
     SmallUrl.destroy
 
-    @google    = SmallUrl.new id: 1, url: 'https://www.google.ca', accessed: 0, created_at: Time.now
-    @slashdot  = SmallUrl.create url: 'www.slashdot.org', accessed: 0, created_at: Time.now
+    # unsaved 
+    @google = SmallUrl.new id: 1, url: 'https://www.google.ca', accessed: 0, created_at: Time.now
+    
+    # saved
+    @slashdot        = SmallUrl.create url: 'www.slashdot.org', accessed: 0, created_at: Time.now
+    @slashdot_custom = CustomUrl.create link: 'sd', smurl_id: @slashdot.id
+
     @cheez_url = 'http://www.cheezeburger.com'
   end
 
   describe 'self.get_small_url' do 
 
-    context 'when url is unknown' do
-      it 'creates a new SmallUrl' do 
-        expect {
-          SmallUrl.get_small_url(@cheez_url)
-        }.to change { SmallUrl.count }.by 1
+    context 'when using orginal_url only' do
+      context 'when url is unknown' do
+        it 'creates a new SmallUrl' do 
+          expect {
+            SmallUrl.get_small_url(@cheez_url)
+          }.to change { SmallUrl.count }.by 1
+        end
+
+        it 'returns a SmallUrl' do 
+          expect(SmallUrl.get_small_url(@cheez_url)).to be_an_instance_of SmallUrl
+        end
       end
 
-      it 'returns a SmallUrl' do 
-        expect(SmallUrl.get_small_url(@cheez_url)).to be_an_instance_of SmallUrl
+      context 'when url is known' do
+        it 'does not create a new SmallUrl' do 
+          expect {
+            SmallUrl.get_small_url(@slashdot.url)
+          }.to change { SmallUrl.count }.by 0
+        end
+
+        it 'returns a SmallUrl' do 
+          expect(SmallUrl.get_small_url(@slashdot.url)).to be_an_instance_of SmallUrl
+        end
       end
     end
 
-    context 'when url is known' do
-      it 'does not create a new SmallUrl' do 
-        expect {
-          SmallUrl.get_small_url(@slashdot.url)
-        }.to change { SmallUrl.count }.by 0
+    context 'when using a vanity url' do 
+      context 'if vanity is new' do 
+        it 'creates a CustomUrl' do 
+          cheez = SmallUrl.get_small_url(@cheez_url, 'cheez')
+
+          expect(SmallUrl.find_by_encoded_id('cheez')).to eql cheez
+        end
       end
 
-      it 'returns a SmallUrl' do 
-        expect(SmallUrl.get_small_url(@slashdot.url)).to be_an_instance_of SmallUrl
+      context 'if vanity already exists' do 
+        it 'should not create a SmallUrl' do 
+          expect {
+            SmallUrl.get_small_url(@slashdot.url, @slashdot_custom.link)
+          }.to change{ SmallUrl.count }.by 0
+        end
       end
     end
   end

@@ -48,6 +48,8 @@ class SmallUrl
 
       small_url
     else
+      # TODO: if this is created, it needs a custom url!
+      # TODO: it needs to check the custom url by its id doesn't already exist
       SmallUrl.first_or_create({ url: original_url }, { accessed: 0, created_at: now })
     end
   end

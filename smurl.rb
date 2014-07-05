@@ -38,6 +38,11 @@ class Smurl < Sinatra::Base
 
     @errors = validate_smurl_params params
 
+    
+    if SmallUrl.find_by_encoded_id(@vanity)
+      @errors << "Custom name '#{@vanity}' already exists"
+    end
+
     @small_url = SmallUrl.get_small_url(@url, @vanity) unless @errors.any?
 
     haml :index

@@ -10,3 +10,7 @@ Scenario: Empty url
 Scenario: Invalid custom url
   When I enter an invalid custom url
   Then I should see a custom url error message
+
+Scenario: Duplicate custom url
+  When I enter an existing custom url
+  Then I should see a duplication error message
