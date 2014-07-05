@@ -1,8 +1,6 @@
 When /^I provide a url to shorten$/ do
   @long_url = 'http://www.toolongfor140charactersorless.com'
-  fill_in 'url', with: @long_url
-
-  click_button 'smurlify'
+  submit_small_url @long_url
 end
 
 Then /^I should see the shortened url$/ do

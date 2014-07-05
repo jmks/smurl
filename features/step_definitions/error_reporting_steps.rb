@@ -1,16 +1,5 @@
 When /^I enter an empty url$/ do
-  visit '/'
-
-  click_button 'smurlify'
-end
-
-def submit_small_url url, vanity
-  visit '/'
-
-  fill_in 'url', with: url
-  fill_in 'vanity', with: vanity
-
-  click_button 'smurlify'
+  submit_small_url nil
 end
 
 Then /^I should see an empty url error message$/ do
