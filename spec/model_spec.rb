@@ -18,7 +18,11 @@ end
 
 describe 'SmallUrl' do 
 
-  before :all do 
+  before :each do 
+    # clean database
+    CustomUrl.destroy
+    SmallUrl.destroy
+
     @google    = SmallUrl.new id: 1, url: 'https://www.google.ca', accessed: 0, created_at: Time.now
     @slashdot  = SmallUrl.create url: 'www.slashdot.org', accessed: 0, created_at: Time.now
     @cheez_url = 'http://www.cheezeburger.com'
