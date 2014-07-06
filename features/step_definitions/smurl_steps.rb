@@ -27,3 +27,21 @@ end
 Then /^I should be redirected to the new url$/ do
   expect(current_url).to eql @new.full_url
 end
+
+Given /^a list of blacklisted custom urls$/ do
+  @blacklisted_word = 'yolo'
+  unless Smurl.smurl_blacklist
+    # rather than finagle a blacklist file, set the variable, then
+    # delete the file in teardown, just append the offending word(s)
+    # to unusable_custom_urls
+    Smurl.unusable_custom_urls << @blacklisted_word
+  end
+end
+
+When /^I create a new small url with a blacklisted custom url$/ do
+  submit_small_url 'http://knowyourmeme.com/memes/yolo', @blacklisted_word
+end
+
+Then /^I should see an error message$/ do
+  expect(page.text).to have_content /that custom url cannot be used/i
+end

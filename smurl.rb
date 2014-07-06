@@ -12,8 +12,8 @@ class Smurl < Sinatra::Base
     @host ||= ENV['HOST'] || request.host_with_port
   end
 
-  # TODO: add support for black listed urls
-  Blacklisted_urls = %w{ urls }
+  set :unusable_custom_urls, %w{ urls }
+  set :smurl_blacklist,      ENV['SMURL_BLACKLIST']
 
   get '/urls' do
     @smurls = SmallUrl.all
@@ -39,7 +39,7 @@ class Smurl < Sinatra::Base
     @url    = params[:url]
     @vanity = params[:vanity]
 
-    @errors = validate_smurl_params params
+    @errors = validate_smurl_params(params, blacklisted_urls(settings))
 
     
     if SmallUrl.find_by_encoded_id(@vanity)
@@ -56,5 +56,4 @@ class Smurl < Sinatra::Base
   end
 
   helpers Helpers
-
 end

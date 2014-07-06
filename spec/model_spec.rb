@@ -1,7 +1,7 @@
 require 'rspec'
 require 'pry'
 
-require_relative '../smurl'
+require_relative './spec_helper'
 
 # aliases for private methods
 def encode62 arg
@@ -16,7 +16,7 @@ def clean_url url
   SmallUrl.send(:clean_url, url)
 end
 
-describe 'SmallUrl' do 
+describe 'SmallUrl' do
 
   before :each do 
     # clean database

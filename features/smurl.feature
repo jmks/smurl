@@ -13,3 +13,8 @@ Scenario: CustomUrl links already in use
   When I create a new small url without vanity url
   And when I visit the new small url link
   Then I should be redirected to the new url
+
+Scenario: Some custom urls can not be used
+  Given a list of blacklisted custom urls
+  When I create a new small url with a blacklisted custom url
+  Then I should see an error message

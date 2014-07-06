@@ -14,7 +14,7 @@ module Helpers
   end
 
   # move to model validations
-  def validate_smurl_params params
+  def validate_smurl_params params, blacklisted=[]
     errors = []
 
     url = params[:url]
@@ -22,11 +22,26 @@ module Helpers
 
     vanity = params[:vanity]
 
-    if vanity && /[^a-zA-Z0-9]/.match(vanity)
-      errors << "Custom url can only contain a-z, A-Z, and 0-9"
+    if vanity
+      # illegal characters
+      if /[^a-zA-Z0-9]/.match(vanity)
+        errors << "Custom url can only contain a-z, A-Z, and 0-9"
+      end
+
+      # blacklisted value
+      if blacklisted and blacklisted.include?(vanity)
+        errors << "That custom url cannot be used at this time"
+      end
     end
 
     errors
   end
-  
+
+  def blacklisted_urls settings
+    if settings.smurl_blacklist
+      File.readlines(settings.smurl_blacklist).map(&:chomp).map(&:strip)
+    else
+      []
+    end + settings.unusable_custom_urls
+  end
 end
